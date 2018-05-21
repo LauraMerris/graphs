@@ -51,6 +51,10 @@ class Graph{
 
   }
 
+  DFS(startNode, endNode){
+    
+  }
+
 }
 
 // Queue holds the list of vertices to be examined
@@ -63,6 +67,18 @@ class Queue{
   }
   dequeue(){
       return this.items.shift();
+  }
+}
+
+class Stack{
+  constructor(){
+    this.items = [];
+  }
+  push(item){
+    this.items.push(item);
+  }
+  pop(){
+    return this.items.pop();
   }
 }
 
