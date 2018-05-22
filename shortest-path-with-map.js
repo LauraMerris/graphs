@@ -25,7 +25,7 @@ class Graph{
       const vertex = queue.dequeue();
 
       // process adjacent nodes
-      g.AdjList.get(vertex).some(function(adj){
+      this.AdjList.get(vertex).some(function(adj){
 
         // process each adjacent node that has not been visited or queued
         if (!visited.has(adj) && queue.items.indexOf(adj) == -1){
@@ -51,10 +51,39 @@ class Graph{
 
   }
 
-  DFS(startNode, endNode){
-    
+
+
+}
+
+function DFS(graph, startNode, endNode){
+  const visited = new Set();
+  const stack = new Stack();
+
+
+//stack.push(startNode);
+//visited.add(startNode);
+  stackEm(graph, startNode, visited, stack);
+
+}
+
+function stackEm(graph, node, visited, stack){
+  // take node and add to stack
+  visited.add(node);
+  stack.push(node);
+  console.log(node + " ");
+
+// examine adjacent nodes not yet visited
+  let examineNode = graph.AdjList.get(node).find(i => !visited.has(i));
+
+  // end condition => all adjacent nodes visited
+  // pop stack
+  // recursively call block with top stack node
+  if (!examineNode){
+    stack.pop();
+    return null;
   }
 
+  return stackEm(graph, examineNode, visited, stack);
 }
 
 // Queue holds the list of vertices to be examined
@@ -120,3 +149,5 @@ path.forEach((value, key) => {
 
 wp = ShortestPath(path, endNode);
 console.log(wp);
+
+DFS(g, startNode, endNode);
