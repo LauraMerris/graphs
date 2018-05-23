@@ -55,36 +55,57 @@ class Graph{
 
 }
 
-function DFS(graph, startNode, endNode){
+function DFSRecursive(graph, startNode, endNode){
   const visited = new Set();
-  const stack = new Stack();
 
-
-//stack.push(startNode);
-//visited.add(startNode);
-  stackEm(graph, startNode, visited, stack);
+  stackEmRecursive(graph, startNode, endNode, visited);
 
 }
 
-function stackEm(graph, node, visited, stack){
+function stackEmRecursive(graph, node, endNode, visited){
   // take node and add to stack
   visited.add(node);
-  stack.push(node);
   console.log(node + " ");
 
-// examine adjacent nodes not yet visited
-  let examineNode = graph.AdjList.get(node).find(i => !visited.has(i));
+  // examine adjacent nodes
+    let n = graph.AdjList.get(node);
 
-  // end condition => all adjacent nodes visited
-  // pop stack
-  // recursively call block with top stack node
-  if (!examineNode){
-    stack.pop();
-    return null;
+    n.forEach(i =>
+      {
+        if (!visited.has(i)){
+
+          stackEmRecursive(graph, i, endNode, visited);
+          
+        }
+
+      });
+
+}
+
+function DFSIterative(graph, startNode, endNode){
+
+  const visited = new Set();
+  const stack = new Stack();
+  stack.push(startNode);
+
+// this is the end condition
+  while (stack.items.length){
+
+      let node = stack.pop();
+
+      if (!visited.has(node)){
+        console.log(node + "");
+        visited.add(node);
+        if (node == endNode){
+          break;
+        }
+        graph.AdjList.get(node).forEach(i => stack.push(i));
+      }
+
   }
 
-  return stackEm(graph, examineNode, visited, stack);
 }
+
 
 // Queue holds the list of vertices to be examined
 class Queue{
@@ -136,18 +157,20 @@ g.addVertex("E", ["B","D"]);
 g.addVertex("F", ["B","H"]);
 g.addVertex("G", ["C","I"]);
 g.addVertex("H", ["F","J", "K"])
-g.addVertex("I", ["G","K"]);
+g.addVertex("I", ["G"]);
 g.addVertex("J", ["H"]);
 g.addVertex("K", ["H","I"]);
 
 
 const path = g.BFS(startNode, endNode);
 
+/*
 path.forEach((value, key) => {
   console.log("key: " + key + " value: " + value);
 })
-
+*/
 wp = ShortestPath(path, endNode);
-console.log(wp);
+console.log("BFS: " + wp);
 
-DFS(g, startNode, endNode);
+DFSRecursive(g, startNode, endNode);
+DFSIterative(g, startNode, endNode);
